@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Trip Planner - Plan Your Perfect Trip Based on Budget & Days{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-pattern"></div>
+    <div class="container hero-content">
+        <div class="hero-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="12 8 8 12 12 16 16 12 12 8"></polygon>
+            </svg>
+            Intelligent Budget & Duration Matching
+        </div>
+
+        <h1 class="hero-title">
+            Smart <span>Trip Planner</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Plan your perfect trip based on your budget and available days.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{ url_for('plan') }}" class="btn btn-primary btn-lg" id="heroPlanMyTripBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+                    <line x1="9" y1="3" x2="9" y2="18"></line>
+                    <line x1="15" y1="6" x2="15" y2="21"></line>
+                </svg>
+                Plan My Trip
+            </a>
+            <a href="{{ url_for('destinations_catalog') }}" class="btn btn-secondary btn-lg" id="heroExploreBtn">
+                Explore Destinations
+            </a>
+        </div>
+
+        <!-- Metrics / Highlights Grid -->
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">18+</span>
+                <span class="stat-label">Indian Destinations</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Transparent Scoring</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">₹0</span>
+                <span class="stat-label">Hidden Fees Calculated</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">1-Click</span>
+                <span class="stat-label">Day-by-Day Itineraries</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="workflow-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Simple 4-Step Process</span>
+            <h2 class="section-title">How Smart Trip Planner Works</h2>
+            <p class="section-subtitle">
+                No complicated black-box AI — just honest, mathematical cost estimation and theme matching.
+            </p>
+        </div>
+
+        <div class="workflow-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Enter Details</h3>
+                <p class="step-desc">Input your starting city, total budget in ₹, days, travelers, and travel preference.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Match & Rank</h3>
+                <p class="step-desc">Our rule-based recommendation algorithm scores destinations for budget, days, and interest.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Get Top 3</h3>
+                <p class="step-desc">Review 3 handpicked destinations with transparent cost breakdowns and suitability badges.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Itinerary & Save</h3>
+                <p class="step-desc">Explore your day-by-day sightseeing plan, itemized budget surplus, and save to your dashboard.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Core Features</span>
+            <h2 class="section-title">Engineered For Smart Travelers</h2>
+            <p class="section-subtitle">Everything you need to plan a memorable vacation without exceeding your wallet.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Accurate Budget Breakdown</h3>
+                <p class="feature-desc">
+                    Get realistic, itemized breakdowns for transit, hotels, daily meals, local activities, and a 5% contingency buffer.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Custom Day-by-Day Itineraries</h3>
+                <p class="feature-desc">
+                    Generates timed morning, afternoon, and evening recommendations that adjust dynamically whether you travel 2 or 6 days.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Theme-Based Selection</h3>
+                <p class="feature-desc">
+                    Whether you desire tranquil hill stations, sunny beaches, mountain thrills, royal history, or spiritual shrines.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Destinations Section -->
+<section class="showcase-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Explore India</span>
+            <h2 class="section-title">Popular Destinations</h2>
+            <p class="section-subtitle">Sample handpicked spots available in our comprehensive database.</p>
+        </div>
+
+        <div class="destinations-grid">
+            {% for d in featured %}
+            <div class="dest-card">
+                <div class="dest-image-wrap">
+                    <img src="{{ d.image_url }}" alt="{{ d.name }}" loading="lazy">
+                    <span class="dest-badge-pref">{{ d.preference }}</span>
+                    <span class="dest-badge-days">Min {{ d.min_days }} Days</span>
+                </div>
+                <div class="dest-body">
+                    <div class="dest-location">
+                        <h3 class="dest-name">{{ d.name }}</h3>
+                        <span class="dest-state">{{ d.state }}</span>
+                    </div>
+                    <p class="dest-desc">{{ d.description }}</p>
+                    <div class="dest-cost-bar">
+                        <span class="dest-cost-label">Avg Hotel / Night</span>
+                        <span class="dest-cost-val">₹{{ "{:,.0f}".format(d.hotel_per_day) }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="{{ url_for('plan') }}" class="btn btn-primary btn-lg" id="featuredStartPlanningBtn">
+                Find Your Tailored Destination Now &rarr;
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

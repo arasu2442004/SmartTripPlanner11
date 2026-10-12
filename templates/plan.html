@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Plan Your Trip - Smart Trip Planner{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <div class="container">
+        <h1>Customize Your Trip Preferences</h1>
+        <p>Tell us where you are starting and what you love — we'll calculate the best destinations within your budget.</p>
+    </div>
+</header>
+
+<div class="container">
+    <div class="plan-wrapper">
+        <div class="plan-card">
+            <form action="{{ url_for('recommend') }}" method="POST" id="tripPlanForm">
+                
+                <!-- 1. Starting Location -->
+                <div class="form-group">
+                    <label class="form-label" for="startLocationInput">
+                        <span>Starting Location</span>
+                        <span class="form-hint">City of departure</span>
+                    </label>
+                    <div class="input-icon-wrap">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <input 
+                            type="text" 
+                            name="start_location" 
+                            id="startLocationInput" 
+                            class="form-control" 
+                            placeholder="e.g. Chennai, Bangalore, Delhi, Mumbai" 
+                            value="{{ defaults.start_location }}" 
+                            required
+                        >
+                    </div>
+                    <!-- Quick City Chips -->
+                    <div class="chips-row">
+                        <span style="font-size: 0.8rem; color: var(--slate-400);">Popular:</span>
+                        <button type="button" class="chip-btn" data-city="Bangalore">Bangalore</button>
+                        <button type="button" class="chip-btn" data-city="Chennai">Chennai</button>
+                        <button type="button" class="chip-btn" data-city="Hyderabad">Hyderabad</button>
+                        <button type="button" class="chip-btn" data-city="Mumbai">Mumbai</button>
+                        <button type="button" class="chip-btn" data-city="Delhi">Delhi</button>
+                    </div>
+                </div>
+
+                <!-- 2. Trip Budget in ₹ -->
+                <div class="form-group">
+                    <label class="form-label" for="budgetInput">
+                        <span>Total Trip Budget (₹)</span>
+                        <span class="form-hint">Total funds allocated for all travelers</span>
+                    </label>
+                    <div class="input-icon-wrap">
+                        <span class="input-icon" style="font-weight: 800; font-size: 1.15rem; color: var(--primary);">₹</span>
+                        <input 
+                            type="number" 
+                            name="budget" 
+                            id="budgetInput" 
+                            class="form-control" 
+                            placeholder="e.g. 25000" 
+                            min="2000" 
+                            step="500" 
+                            value="{{ defaults.budget }}" 
+                            required
+                        >
+                    </div>
+                    <!-- Quick Budget Chips -->
+                    <div class="chips-row">
+                        <span style="font-size: 0.8rem; color: var(--slate-400);">Suggestions:</span>
+                        <button type="button" class="chip-btn" data-budget="10000">₹10,000 (Solo / Quick)</button>
+                        <button type="button" class="chip-btn" data-budget="20000">₹20,000 (Couple)</button>
+                        <button type="button" class="chip-btn" data-budget="35000">₹35,000 (Family)</button>
+                        <button type="button" class="chip-btn" data-budget="50000">₹50,000 (Extended)</button>
+                    </div>
+                </div>
+
+                <!-- 3. Duration & Travelers (Two-Column Row) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.75rem;">
+                    
+                    <!-- Days Stepper -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">
+                            <span>Number of Days</span>
+                            <span class="form-hint">Duration</span>
+                        </label>
+                        <div class="stepper-wrap">
+                            <button type="button" class="stepper-btn stepper-minus" aria-label="Decrease days">-</button>
+                            <input 
+                                type="number" 
+                                name="days" 
+                                id="daysInput" 
+                                class="stepper-input" 
+                                min="1" 
+                                max="14" 
+                                value="{{ defaults.days }}" 
+                                required
+                            >
+                            <button type="button" class="stepper-btn stepper-plus" aria-label="Increase days">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Travelers Stepper -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">
+                            <span>Number of Travelers</span>
+                            <span class="form-hint">People</span>
+                        </label>
+                        <div class="stepper-wrap">
+                            <button type="button" class="stepper-btn stepper-minus" aria-label="Decrease travelers">-</button>
+                            <input 
+                                type="number" 
+                                name="travelers" 
+                                id="travelersInput" 
+                                class="stepper-input" 
+                                min="1" 
+                                max="10" 
+                                value="{{ defaults.travelers }}" 
+                                required
+                            >
+                            <button type="button" class="stepper-btn stepper-plus" aria-label="Increase travelers">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Travel Preference -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>Travel Preference</span>
+                        <span class="form-hint">Select the vibe of your trip</span>
+                    </label>
+
+                    <div class="pref-grid">
+                        <!-- Nature -->
+                        <label class="pref-card-label">
+                            <input type="radio" name="preference" value="Nature" {% if defaults.preference == 'Nature' %}checked{% endif %}>
+                            <div class="pref-card">
+                                <span class="pref-card-icon">🌲</span>
+                                <span class="pref-card-name">Nature</span>
+                                <span class="pref-card-sub">Hills & Greenery</span>
+                            </div>
+                        </label>
+
+                        <!-- Beach -->
+                        <label class="pref-card-label">
+                            <input type="radio" name="preference" value="Beach" {% if defaults.preference == 'Beach' %}checked{% endif %}>
+                            <div class="pref-card">
+                                <span class="pref-card-icon">🏖️</span>
+                                <span class="pref-card-name">Beach</span>
+                                <span class="pref-card-sub">Coast & Sunsets</span>
+                            </div>
+                        </label>
+
+                        <!-- Adventure -->
+                        <label class="pref-card-label">
+                            <input type="radio" name="preference" value="Adventure" {% if defaults.preference == 'Adventure' %}checked{% endif %}>
+                            <div class="pref-card">
+                                <span class="pref-card-icon">🧗‍♂️</span>
+                                <span class="pref-card-name">Adventure</span>
+                                <span class="pref-card-sub">Trekking & Rafting</span>
+                            </div>
+                        </label>
+
+                        <!-- Historical -->
+                        <label class="pref-card-label">
+                            <input type="radio" name="preference" value="Historical" {% if defaults.preference == 'Historical' %}checked{% endif %}>
+                            <div class="pref-card">
+                                <span class="pref-card-icon">🏰</span>
+                                <span class="pref-card-name">Historical</span>
+                                <span class="pref-card-sub">Palaces & Heritage</span>
+                            </div>
+                        </label>
+
+                        <!-- Religious -->
+                        <label class="pref-card-label">
+                            <input type="radio" name="preference" value="Religious" {% if defaults.preference == 'Religious' %}checked{% endif %}>
+                            <div class="pref-card">
+                                <span class="pref-card-icon">🛕</span>
+                                <span class="pref-card-name">Religious</span>
+                                <span class="pref-card-sub">Temples & Peace</span>
+                            </div>
+                        </label>
+
+                        <!-- All / Flexible -->
+                        <label class="pref-card-label">
+                            <input type="radio" name="preference" value="All" {% if defaults.preference == 'All' %}checked{% endif %}>
+                            <div class="pref-card">
+                                <span class="pref-card-icon">✨</span>
+                                <span class="pref-card-name">Any / All</span>
+                                <span class="pref-card-sub">Open to Explore</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div style="margin-top: 2.5rem;">
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" id="findMyTripBtn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Find My Trip
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

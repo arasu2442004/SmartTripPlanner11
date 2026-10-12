@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Smart Trip Planner{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Create Account</h1>
+                <p>Save trips, track itineraries, and unlock your travel dashboard</p>
+            </div>
+
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="form-group">
+                    <label class="form-label" for="regName">Full Name</label>
+                    <input 
+                        type="text" 
+                        name="name" 
+                        id="regName" 
+                        class="form-control form-control-simple" 
+                        placeholder="John Doe" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="regEmail">Email Address</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="regEmail" 
+                        class="form-control form-control-simple" 
+                        placeholder="you@example.com" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="regPassword">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="regPassword" 
+                        class="form-control form-control-simple" 
+                        placeholder="••••••••" 
+                        minlength="4" 
+                        required
+                    >
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" id="registerSubmitBtn">
+                        Create Account
+                    </button>
+                </div>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? 
+                <a href="{{ url_for('login') }}" style="font-weight: 600;">Sign in</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

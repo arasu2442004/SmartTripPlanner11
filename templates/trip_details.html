@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}Trip Plan: {{ destination.name }} - Smart Trip Planner{% endblock %}
+
+{% block content %}
+<!-- Trip Hero Header -->
+<header class="trip-hero">
+    <div class="container trip-hero-inner">
+        <div class="trip-hero-details">
+            <span class="state">{{ destination.state }} &bull; {{ destination.preference }} Getaway</span>
+            <h1>{{ destination.name }} Trip Plan</h1>
+            <p style="color: #cbd5e1; max-width: 650px;">{{ destination.description }}</p>
+
+            <div class="trip-meta-row">
+                <span class="trip-meta-badge">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    From {{ params.start_location }}
+                </span>
+                <span class="trip-meta-badge">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    {{ params.days }} Days Duration
+                </span>
+                <span class="trip-meta-badge">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                    </svg>
+                    {{ params.travelers }} Traveler{% if params.travelers > 1 %}s{% endif %}
+                </span>
+                <span class="trip-meta-badge">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 14 14"></polyline>
+                    </svg>
+                    Best Time: {{ destination.best_time }}
+                </span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary btn-sm" id="printTripBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                Print / Save PDF
+            </button>
+            <a href="{{ url_for('recommend') }}" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">
+                &larr; Back to Recommendations
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Details Layout (Two Columns: Itinerary + Budget Breakdown) -->
+<div class="container">
+    <div class="trip-grid">
+        
+        <!-- Column 1: Day-by-Day Itinerary -->
+        <div class="timeline-section">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <div>
+                    <h2>Day-by-Day Itinerary</h2>
+                    <p style="color: var(--slate-500); font-size: 0.95rem;">
+                        Carefully structured timeline based on {{ destination.name }} attractions.
+                    </p>
+                </div>
+                <span class="day-pill">{{ params.days }} Days Schedule</span>
+            </div>
+
+            <div class="itinerary-timeline">
+                {% for item in itinerary %}
+                <div class="day-card" id="dayCard{{ item.day }}">
+                    <div class="day-header">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span class="day-pill">Day {{ item.day }}</span>
+                            <span class="day-title">{{ item.title }}</span>
+                        </div>
+                    </div>
+
+                    <div class="day-activities">
+                        <!-- Morning -->
+                        <div class="activity-item">
+                            <span class="time-badge time-morning">Morning</span>
+                            <p class="activity-text">{{ item.morning }}</p>
+                        </div>
+                        <!-- Afternoon -->
+                        <div class="activity-item">
+                            <span class="time-badge time-afternoon">Afternoon</span>
+                            <p class="activity-text">{{ item.afternoon }}</p>
+                        </div>
+                        <!-- Evening -->
+                        <div class="activity-item">
+                            <span class="time-badge time-evening">Evening</span>
+                            <p class="activity-text">{{ item.evening }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Destination Highlights Box -->
+            <div style="margin-top: 2.5rem; background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--slate-200); padding: 1.75rem;">
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem;">Key Highlights & Attractions</h3>
+                <p style="color: var(--slate-600); font-size: 0.95rem; line-height: 1.6;">
+                    {{ destination.highlights }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Column 2: Budget Breakdown & Save Action -->
+        <aside class="budget-sidebar">
+            <div class="budget-card">
+                <h3>Estimated Budget Breakdown</h3>
+                <p style="color: var(--slate-500); font-size: 0.85rem; margin-bottom: 1.25rem;">
+                    Calculated for {{ params.travelers }} traveler{% if params.travelers > 1 %}s{% endif %}, {{ cost.rooms }} room{% if cost.rooms > 1 %}s{% endif %}, and {{ params.days }} days.
+                </p>
+
+                <!-- Visual Meter Bar -->
+                {% set transport_pct = (cost.transport_cost / cost.total_cost * 100) | round(1) %}
+                {% set hotel_pct = (cost.hotel_cost / cost.total_cost * 100) | round(1) %}
+                {% set food_pct = (cost.food_cost / cost.total_cost * 100) | round(1) %}
+                {% set activity_pct = (cost.activity_cost / cost.total_cost * 100) | round(1) %}
+                {% set misc_pct = (cost.misc_cost / cost.total_cost * 100) | round(1) %}
+
+                <div class="budget-meter-wrap">
+                    <div class="budget-meter-bar">
+                        <div class="meter-fill fill-transport" style="width: {{ transport_pct }}%;" title="Transport: {{ transport_pct }}%"></div>
+                        <div class="meter-fill fill-hotel" style="width: {{ hotel_pct }}%;" title="Hotel: {{ hotel_pct }}%"></div>
+                        <div class="meter-fill fill-food" style="width: {{ food_pct }}%;" title="Food: {{ food_pct }}%"></div>
+                        <div class="meter-fill fill-activity" style="width: {{ activity_pct }}%;" title="Activities: {{ activity_pct }}%"></div>
+                        <div class="meter-fill fill-misc" style="width: {{ misc_pct }}%;" title="Miscellaneous: {{ misc_pct }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Itemized Breakdown List -->
+                <ul class="budget-list">
+                    <li class="budget-item">
+                        <div class="item-left">
+                            <span class="item-dot" style="background-color: var(--primary);"></span>
+                            <span>Transportation (Round Trip)</span>
+                        </div>
+                        <span class="item-amount">₹{{ "{:,.0f}".format(cost.transport_cost) }}</span>
+                    </li>
+
+                    <li class="budget-item">
+                        <div class="item-left">
+                            <span class="item-dot" style="background-color: var(--indigo);"></span>
+                            <span>Hotel ({{ cost.rooms }} room, {{ params.days }} nights)</span>
+                        </div>
+                        <span class="item-amount">₹{{ "{:,.0f}".format(cost.hotel_cost) }}</span>
+                    </li>
+
+                    <li class="budget-item">
+                        <div class="item-left">
+                            <span class="item-dot" style="background-color: var(--amber);"></span>
+                            <span>Food & Dining</span>
+                        </div>
+                        <span class="item-amount">₹{{ "{:,.0f}".format(cost.food_cost) }}</span>
+                    </li>
+
+                    <li class="budget-item">
+                        <div class="item-left">
+                            <span class="item-dot" style="background-color: var(--emerald);"></span>
+                            <span>Sightseeing & Activities</span>
+                        </div>
+                        <span class="item-amount">₹{{ "{:,.0f}".format(cost.activity_cost) }}</span>
+                    </li>
+
+                    <li class="budget-item">
+                        <div class="item-left">
+                            <span class="item-dot" style="background-color: var(--slate-400);"></span>
+                            <span>Miscellaneous (5% buffer)</span>
+                        </div>
+                        <span class="item-amount">₹{{ "{:,.0f}".format(cost.misc_cost) }}</span>
+                    </li>
+                </ul>
+
+                <!-- Budget Summary Box -->
+                <div class="budget-total-box">
+                    <div class="budget-row">
+                        <span style="color: var(--slate-500);">Your Total Budget:</span>
+                        <strong style="color: var(--slate-900);">₹{{ "{:,.0f}".format(params.budget) }}</strong>
+                    </div>
+                    <div class="budget-row">
+                        <span style="color: var(--slate-500);">Total Estimated Cost:</span>
+                        <strong style="color: var(--primary);">₹{{ "{:,.0f}".format(cost.total_cost) }}</strong>
+                    </div>
+                    <div class="budget-row grand-total">
+                        <span>Remaining Budget:</span>
+                        {% if remaining_budget >= 0 %}
+                            <span class="surplus-tag">₹{{ "{:,.0f}".format(remaining_budget) }}</span>
+                        {% else %}
+                            <span style="color: var(--rose);">₹{{ "{:,.0f}".format(remaining_budget) }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Save Trip Form Action -->
+                <form action="{{ url_for('save_trip') }}" method="POST" id="saveTripForm">
+                    <input type="hidden" name="destination_id" value="{{ destination.id }}">
+                    <input type="hidden" name="start_location" value="{{ params.start_location }}">
+                    <input type="hidden" name="budget" value="{{ params.budget }}">
+                    <input type="hidden" name="days" value="{{ params.days }}">
+                    <input type="hidden" name="travelers" value="{{ params.travelers }}">
+                    <input type="hidden" name="preference" value="{{ params.preference }}">
+                    <input type="hidden" name="total_cost" value="{{ cost.total_cost }}">
+                    <input type="hidden" name="remaining_budget" value="{{ remaining_budget }}">
+
+                    <button type="submit" class="btn btn-accent" style="width: 100%;" id="saveTripBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Save Trip to Dashboard
+                    </button>
+                </form>
+
+                <div style="margin-top: 1rem; text-align: center;">
+                    <a href="{{ url_for('plan') }}" style="font-size: 0.85rem; color: var(--slate-500); text-decoration: underline;">
+                        Plan another trip
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</div>
+{% endblock %}

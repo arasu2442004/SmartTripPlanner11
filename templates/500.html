@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - Smart Trip Planner{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding: 6rem 1rem 8rem;">
+    <h1 style="font-size: 5rem; color: var(--rose); margin-bottom: 0.5rem;">500</h1>
+    <h2 style="margin-bottom: 1rem;">Internal Server Error</h2>
+    <p style="color: var(--slate-600); margin-bottom: 2rem;">
+        An unexpected error occurred while calculating your itinerary.
+    </p>
+    <a href="{{ url_for('plan') }}" class="btn btn-primary">
+        Plan Trip Again
+    </a>
+</div>
+{% endblock %}

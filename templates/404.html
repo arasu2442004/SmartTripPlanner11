@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - Smart Trip Planner{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding: 6rem 1rem 8rem;">
+    <h1 style="font-size: 5rem; color: var(--primary); margin-bottom: 0.5rem;">404</h1>
+    <h2 style="margin-bottom: 1rem;">Destination Not Found</h2>
+    <p style="color: var(--slate-600); margin-bottom: 2rem;">
+        The page or itinerary you are looking for doesn't exist or has moved.
+    </p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">
+        Return to Home Page
+    </a>
+</div>
+{% endblock %}
